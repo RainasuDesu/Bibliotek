@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bibliotek
 {
-    internal class Member
+    public class Member
     {
         public string MemberId { get; set; }
         public string Name { get; set; }

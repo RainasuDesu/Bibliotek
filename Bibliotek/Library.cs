@@ -13,11 +13,13 @@ namespace Bibliotek
     public class Library
     {
         public List<Item> Items { get; set; }
+        public List<Member> Members { get; set; }
 
         // Konstruktor
         public Library()
         {
             Items = new List<Item>();
+            Members = new List<Member>();
         }
 
         // Add item to library
@@ -78,6 +80,10 @@ namespace Bibliotek
             }
 
             return "Item not found";
+        }
+        public void AddMember(Member member)
+        {
+            Members.Add(member);
         }
     }
 }
