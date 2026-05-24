@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Bibliotek
 {
-    internal class LoanLog
+    public class LoanLog
     {
+        public string ItemId { get; set; }
+        public string MemberId { get; set; }
+        public DateTime DueDate { get; set; }
     }
 }

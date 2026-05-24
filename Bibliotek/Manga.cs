@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Bibliotek
 {
-    public class Books : Item
+    public class Manga: Item
     {
-        public int Pages { get; set; }
+     public int Volume { get; set; }
     }
 }
-

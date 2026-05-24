@@ -12,78 +12,119 @@ namespace Bibliotek
     }
     public class Library
     {
-        public List<Item> Items { get; set; }
-        public List<Member> Members { get; set; }
+        public List<Item> Items { get; set; } = new List<Item>();
+        public List<LoanLog> ActiveLoans { get; set; } = new List<LoanLog>();
+        public List<Member> Members { get; set; } = new List<Member>();
 
-        // Konstruktor
-        public Library()
+        public void AddMember(string id, string name)
         {
-            Items = new List<Item>();
-            Members = new List<Member>();
+            bool idAlreadyExists = false;
+
+            foreach(Member m in Members)
+            {
+                if(m.MemberId == id)
+                {
+                    idAlreadyExists = true;
+                    break;
+                }
+            }
+            if(idAlreadyExists)
+            {
+                Console.WriteLine($"A user with the ID: {id} already exixts. Choose a different ID.");
+            }
+            else
+            {
+                Member newMember = new Member { MemberId = id, Name = name, PenaltyOwed = 0 };
+                Members.Add(newMember);
+                Console.WriteLine($"System: Success! Member: {name} (ID: {id} has been created.");
+            }
+                
         }
-
-        // Add item to library
-        public void AddItem(Item item)
+        public void ShowCatalog()
         {
-            Items.Add(item);
-        }
-
-        // Remove item safely (utan bug)
-        public void RemoveItem(string id)
-        {
-            Item itemToRemove = null;
-
+            Console.WriteLine("\n--- LIBRARY CATALOG ---");
             foreach (Item item in Items)
             {
-                if (item.GetId() == id)
+                string type = "Item";
+                if (item is Books) type = "Book";
+                if (item is Movies) type = "Movie";
+                if (item is Manga) type = "Magazine";
+
+                Console.WriteLine($"[{type}] ID: {item.Id} - Name: {item.Name}");
+            }
+            Console.WriteLine("---------------------\n");
+        }
+        public string LoanItem(string itemId, string memberId)
+        {
+            Item foundItem = null;
+            foreach (Item item in Items)
+            {
+                if(item.Id == itemId)
                 {
-                    itemToRemove = item;
+                    foundItem = item;
                     break;
                 }
             }
 
-            if (itemToRemove != null)
+            if(foundItem == null)
             {
-                Items.Remove(itemToRemove);
+                return "Item Does not exist";
             }
-        }
 
-        // Loan item
-        public Item LoanItem(string itemId, string memberId)
-        {
-            foreach (Item item in Items)
+            bool isAlreadyLoaned = false;
+            foreach (LoanLog loan in ActiveLoans)
             {
-                if (item.GetId() == itemId)
+                if(loan.ItemId == itemId)
                 {
-                    return item;
+                    isAlreadyLoaned = true;
+                    break;
                 }
             }
 
-            return null;
-        }
-
-        // Return item (simple version)
-        public void ReturnItem(string itemId)
-        {
-            // Här kan du lägga logik senare
-        }
-
-        // Find item by ID
-        public string FindItem(string id)
-        {
-            foreach (Item item in Items)
+            if (isAlreadyLoaned)
             {
-                if (item.GetId() == id)
+                return "Item is already loaned";
+            }
+
+            LoanLog newLoan = new LoanLog
+            {
+                ItemId = itemId,
+                MemberId = memberId,
+                DueDate = DateTime.Now.AddSeconds(25)
+            };
+            ActiveLoans.Add(newLoan);
+            return $"Loan complete! {foundItem.Name} has been loaned";
+        }
+
+        public void ReturnItem(string itemId, Member member, bool simulateLate)
+        {
+            LoanLog activeLoan = null;
+            foreach (LoanLog loan in ActiveLoans)
+            {
+                if(loan.ItemId==itemId && loan.MemberId == member.MemberId)
                 {
-                    return item.Name;
+                    activeLoan = loan;
+                    break;
                 }
             }
 
-            return "Item not found";
-        }
-        public void AddMember(Member member)
-        {
-            Members.Add(member);
+            if(activeLoan == null)
+            {
+                Console.WriteLine("You have not loaned this item!");
+                return;
+            }
+
+            if(DateTime.Now > activeLoan.DueDate)
+            {
+                member.PenaltyOwed += 50;
+                Console.WriteLine($"{itemId} returned too late. Penalty: 50kr fine.");
+            }
+            else
+            {
+                Console.WriteLine($"{itemId} Returned in time.");
+            }
+            // Remove loan from list
+            ActiveLoans.Remove(activeLoan);
         }
     }
 }
