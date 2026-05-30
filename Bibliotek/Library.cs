@@ -16,6 +16,42 @@ namespace Bibliotek
         public List<LoanLog> ActiveLoans { get; set; } = new List<LoanLog>();
         public List<Member> Members { get; set; } = new List<Member>();
 
+        public Library()
+        {
+            // --- Manga ---
+
+            Creator ohba = new Creator {Name = "Tsugumi Ohba"};
+            Items.Add (new Manga {Id = "M1", Name = "Death Note", ItemCreator = ohba });
+
+            Creator isayama = new Creator { Name = "Hajime Isayama" };
+            Items.Add(new Manga { Id = "M2", Name = "Attack on Titan", ItemCreator = isayama });
+
+            Creator akutami = new Creator { Name = "Gege Akutami" };
+            Items.Add(new Manga { Id = "M3", Name = "Jujutsu Kaisen", ItemCreator = akutami });
+
+            // --- Books ---
+
+            Creator rowling = new Creator { Name = "J.K. Rowling" };
+            Items.Add(new Books { Id = "B1", Name = "Harry Potter and the Philosopher's Stone", ItemCreator = rowling });
+            Items.Add(new Books { Id = "B2", Name = "Harry Potter and the Chamber of Secrets", ItemCreator = rowling });
+            Items.Add(new Books { Id = "B3", Name = "Harry Potter and the Prisoner of Azkaban", ItemCreator = rowling });
+            
+            Creator golding = new Creator { Name = "William Golding" };
+            Items.Add(new Books { Id = "B5", Name = "Flugornas herrar", ItemCreator = golding });
+
+            Creator dashner = new Creator { Name = "James Dashner" };
+            Items.Add(new Books { Id = "B6", Name = "The Maze Runner", ItemCreator = dashner });
+            // --- Movies ---
+
+            Creator columbia = new Creator { Name = "Columbia Pictures" };
+            Items.Add(new Movies { Id = "F1", Name = "Spider-Man", ItemCreator = columbia }); // Tobey Maguire
+            Items.Add(new Movies { Id = "F2", Name = "Spider-Man 2", ItemCreator = columbia }); // Tobey Maguire
+
+            Creator sonyAnimation = new Creator { Name = "Sony Pictures Animation" };
+            Items.Add(new Movies { Id = "F3", Name = "Spider-Man: Into the Spider-Verse", ItemCreator = sonyAnimation });
+
+        }
+
         public void AddMember(string id, string name)
         {
             bool idAlreadyExists = false;
@@ -36,7 +72,7 @@ namespace Bibliotek
             {
                 Member newMember = new Member { MemberId = id, Name = name, PenaltyOwed = 0 };
                 Members.Add(newMember);
-                Console.WriteLine($"System: Success! Member: {name} (ID: {id} has been created.");
+                Console.WriteLine($"System: Success! Member: {name} (ID: {id}) has been created.");
             }
                 
         }
@@ -48,9 +84,9 @@ namespace Bibliotek
                 string type = "Item";
                 if (item is Books) type = "Book";
                 if (item is Movies) type = "Movie";
-                if (item is Manga) type = "Magazine";
+                if (item is Manga) type = "Manga";
 
-                Console.WriteLine($"[{type}] ID: {item.Id} - Name: {item.Name}");
+                Console.WriteLine($"[{type}] ID: {item.Id} - Name: {item.Name} | Creator: {item.ItemCreator.Name}");
             }
             Console.WriteLine("---------------------\n");
         }
@@ -96,7 +132,7 @@ namespace Bibliotek
             return $"Loan complete! {foundItem.Name} has been loaned";
         }
 
-        public void ReturnItem(string itemId, Member member, bool simulateLate)
+        public void ReturnItem(string itemId, Member member)
         {
             LoanLog activeLoan = null;
             foreach (LoanLog loan in ActiveLoans)

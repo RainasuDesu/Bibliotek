@@ -8,11 +8,10 @@ namespace Bibliotek
 {
     public class Creator
     {
-       public string FirstName { get; set; }
-       public string LastName { get; set; }
-       public int BirthDate { get; set; }
-       public List<Item> Works { get; set; } = new List<Item>();
-
-       public string Bio { get; set; }
+       public string Name { get; set; }
+       
+       // For later expansion (creator search engine)
+       //public string Bio { get; set; }
+       //public int BirthYear { get; set; }
     }
 }

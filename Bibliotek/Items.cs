@@ -10,6 +10,6 @@ namespace Bibliotek
     {
         public string Id { get; set; }
         public string Name { get; set; }
+        public Creator ItemCreator { get; set; }
     }
-
 }
