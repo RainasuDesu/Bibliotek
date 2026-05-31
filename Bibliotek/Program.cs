@@ -91,7 +91,7 @@ namespace Bibliotek
                         Console.WriteLine(resultMessage);
                         Console.ReadLine();
                         break;
-                    case 3:
+                    case 3: //Create or Switch account.
                         Console.Clear();
                         Console.WriteLine("---Account Management---");
                         Console.WriteLine("1. Create a brand new account");
@@ -148,7 +148,7 @@ namespace Bibliotek
                         Console.WriteLine("\nPress Enter to continue");
                         Console.ReadLine();
                         break;
-                    case 4:
+                    case 4: // Checks your active loans and lets u return them
                         Console.Clear();
                         Console.WriteLine("---My Active Loans---");
                         bool hasLoans = false;
@@ -201,7 +201,7 @@ namespace Bibliotek
                             }
                             else if (returnChoice == 2)
                             {
-                                Console.WriteLine("Returning to main menu...");
+                                Console.WriteLine("Returning to main menu.");
                             }
                             else
                             {

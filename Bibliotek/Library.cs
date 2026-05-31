@@ -20,35 +20,36 @@ namespace Bibliotek
         {
             // --- Manga ---
 
-            Creator ohba = new Creator {Name = "Tsugumi Ohba"};
-            Items.Add (new Manga {Id = "M1", Name = "Death Note", ItemCreator = ohba });
+            Creator ohba = new Creator { Name = "Tsugumi Ohba" };
+            Items.Add(new Manga { Id = "M1", Name = "Death Note", ItemCreator = ohba, Volume = 1 });
 
             Creator isayama = new Creator { Name = "Hajime Isayama" };
-            Items.Add(new Manga { Id = "M2", Name = "Attack on Titan", ItemCreator = isayama });
+            Items.Add(new Manga { Id = "M2", Name = "Attack on Titan", ItemCreator = isayama, Volume = 1 });
 
             Creator akutami = new Creator { Name = "Gege Akutami" };
-            Items.Add(new Manga { Id = "M3", Name = "Jujutsu Kaisen", ItemCreator = akutami });
+            Items.Add(new Manga { Id = "M3", Name = "Jujutsu Kaisen", ItemCreator = akutami, Volume = 1 });
 
             // --- Books ---
 
             Creator rowling = new Creator { Name = "J.K. Rowling" };
-            Items.Add(new Books { Id = "B1", Name = "Harry Potter and the Philosopher's Stone", ItemCreator = rowling });
-            Items.Add(new Books { Id = "B2", Name = "Harry Potter and the Chamber of Secrets", ItemCreator = rowling });
-            Items.Add(new Books { Id = "B3", Name = "Harry Potter and the Prisoner of Azkaban", ItemCreator = rowling });
-            
+            Items.Add(new Books { Id = "B1", Name = "Harry Potter and the Philosopher's Stone", ItemCreator = rowling, Pages = 223 });
+            Items.Add(new Books { Id = "B2", Name = "Harry Potter and the Chamber of Secrets", ItemCreator = rowling, Pages = 251 });
+            Items.Add(new Books { Id = "B3", Name = "Harry Potter and the Prisoner of Azkaban", ItemCreator = rowling, Pages = 480 });
+
             Creator golding = new Creator { Name = "William Golding" };
-            Items.Add(new Books { Id = "B5", Name = "Flugornas herrar", ItemCreator = golding });
+            Items.Add(new Books { Id = "B5", Name = "Flugornas herre", ItemCreator = golding, Pages = 208 });
 
             Creator dashner = new Creator { Name = "James Dashner" };
-            Items.Add(new Books { Id = "B6", Name = "The Maze Runner", ItemCreator = dashner });
+            Items.Add(new Books { Id = "B6", Name = "The Maze Runner", ItemCreator = dashner, Pages = 375 });
+
             // --- Movies ---
 
             Creator columbia = new Creator { Name = "Columbia Pictures" };
-            Items.Add(new Movies { Id = "F1", Name = "Spider-Man", ItemCreator = columbia }); // Tobey Maguire
-            Items.Add(new Movies { Id = "F2", Name = "Spider-Man 2", ItemCreator = columbia }); // Tobey Maguire
+            Items.Add(new Movies { Id = "F1", Name = "Spider-Man", ItemCreator = columbia, Duration = new TimeSpan(2, 1, 0) }); // Tobey Maguire
+            Items.Add(new Movies { Id = "F2", Name = "Spider-Man 2", ItemCreator = columbia, Duration = new TimeSpan(2, 7, 0) }); // Tobey Maguire
 
             Creator sonyAnimation = new Creator { Name = "Sony Pictures Animation" };
-            Items.Add(new Movies { Id = "F3", Name = "Spider-Man: Into the Spider-Verse", ItemCreator = sonyAnimation });
+            Items.Add(new Movies { Id = "F3", Name = "Spider-Man: Into the Spider-Verse", ItemCreator = sonyAnimation, Duration = new TimeSpan(1, 56, 0) });
 
         }
 
@@ -82,11 +83,25 @@ namespace Bibliotek
             foreach (Item item in Items)
             {
                 string type = "Item";
-                if (item is Books) type = "Book";
-                if (item is Movies) type = "Movie";
-                if (item is Manga) type = "Manga";
+                string extraInfo = "";
 
-                Console.WriteLine($"[{type}] ID: {item.Id} - Name: {item.Name} | Creator: {item.ItemCreator.Name}");
+                if (item is Books bookItem) 
+                { 
+                    type = "Book"; 
+                    extraInfo = $" | Pages: {bookItem.Pages}"; 
+                }
+                else if (item is Movies movieItem) 
+                { 
+                    type = "Movie"; 
+                    extraInfo = $" | Duration: {movieItem.Duration.Hours}h {movieItem.Duration.Minutes}m"; 
+                }
+                else if (item is Manga mangaItem) 
+                { 
+                    type = "Manga"; 
+                    extraInfo = $" | Volume: {mangaItem.Volume}"; 
+                }
+
+                Console.WriteLine($"[{type}] ID: {item.Id} - Name: {item.Name} | Creator: {item.ItemCreator.Name}{extraInfo}");
             }
             Console.WriteLine("---------------------\n");
         }
